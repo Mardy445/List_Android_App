@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             CustomListDataItem dataItem = (CustomListDataItem) parent.getItemAtPosition(position);
-
+            if(dataItem.isComplete()){
+                return;
+            }
             boolean status = !dataItem.isSelected();
             unselectAll();
             dataItem.setSelected(status);

@@ -4,6 +4,7 @@ public class CustomListDataItem{
 
     private String data;
     private boolean selected = false;
+    private boolean complete = false;
 
     public CustomListDataItem(String data){
         this.data = data;
@@ -15,6 +16,14 @@ public class CustomListDataItem{
 
     public void setSelected(boolean selected){
         this.selected = selected;
+    }
+
+    public boolean isComplete(){
+        return complete;
+    }
+
+    public void setComplete(boolean complete){
+        this.complete = complete;
     }
 
     public String getData(){

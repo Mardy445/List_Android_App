@@ -10,4 +10,7 @@
 
     <color name="colorSelectedText">#324944</color>
     <color name="colorSelectedTextBackground">#77E6EE9C</color>
+
+    <color name="colorCompleteText">#969696</color>
+    <color name="colorCompleteTextBackground">#77707070</color>
 </resources>

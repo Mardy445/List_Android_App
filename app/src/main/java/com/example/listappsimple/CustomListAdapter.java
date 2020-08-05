@@ -17,23 +17,21 @@ import androidx.annotation.Nullable;
 public class CustomListAdapter extends BaseAdapter implements ListAdapter {
 
     private Context mContext;
-    private ArrayList<String> data;
-    private ArrayList<String> selectedData;
+    private ArrayList<CustomListDataItem> listData;
 
-    public CustomListAdapter(ArrayList<String> data, ArrayList<String> selectedData, Context context) {
+    public CustomListAdapter(ArrayList<CustomListDataItem> listData, Context context) {
         mContext = context;
-        this.data = data;
-        this.selectedData = selectedData;
+        this.listData = listData;
     }
 
     @Override
     public int getCount() {
-        return data.size();
+        return listData.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return data.get(position);
+        return listData.get(position);
     }
 
     @Override
@@ -44,24 +42,23 @@ public class CustomListAdapter extends BaseAdapter implements ListAdapter {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        final String data = (String) getItem(position);
+        final CustomListDataItem data = (CustomListDataItem) getItem(position);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(R.layout.custom_list_item,parent,false);
 
         TextView view = convertView.findViewById(R.id.data_dump_note_item);
         Button button = convertView.findViewById(R.id.data_dump_remove_button);
-        view.setText(data);
+        view.setText(data.getData());
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomListAdapter.this.data.remove(data);
-                selectedData.remove(data);
-                CustomListAdapter.this.notifyDataSetChanged();
+                listData.remove(data);
+                notifyDataSetChanged();
             }
         });
 
-        if(selectedData.contains(data)){
+        if(data.isSelected()){
             view.setBackgroundColor(convertView.getResources().getColor(R.color.colorSelectedTextBackground));
             view.setTextColor(convertView.getResources().getColor(R.color.colorSelectedText));
         }

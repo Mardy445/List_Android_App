@@ -12,8 +12,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<String> data = new ArrayList<>();
-    ArrayList<String> selectedData = new ArrayList<>();
+    ArrayList<CustomListDataItem> data = new ArrayList<>();
     BaseAdapter adapter;
 
     @Override
@@ -24,11 +23,11 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.main_list_view);
         listView.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
 
-        data.add("1");
-        data.add("2");
-        data.add("3");
+        data.add(new CustomListDataItem("1"));
+        data.add(new CustomListDataItem("2"));
+        data.add(new CustomListDataItem("3"));
 
-        adapter = new CustomListAdapter(data,selectedData, listView.getContext());
+        adapter = new CustomListAdapter(data, listView.getContext());
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new DataClickedListener());
     }
@@ -36,15 +35,17 @@ public class MainActivity extends AppCompatActivity {
     private class DataClickedListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            String data = (String) parent.getItemAtPosition(position);
+            CustomListDataItem dataItem = (CustomListDataItem) parent.getItemAtPosition(position);
 
-            if(selectedData.contains(data)) {
-                selectedData.remove(data);
-                adapter.notifyDataSetChanged();
-            }
-            else {
-                selectedData.add(data);
-                adapter.notifyDataSetChanged();
+            boolean status = !dataItem.isSelected();
+            unselectAll();
+            dataItem.setSelected(status);
+            adapter.notifyDataSetChanged();
+        }
+        
+        private void unselectAll(){
+            for(CustomListDataItem dataItem : data){
+                dataItem.setSelected(false);
             }
         }
     }

@@ -9,5 +9,5 @@
     <color name="fadeColour">#00000000</color>
 
     <color name="colorSelectedText">#324944</color>
-    <color name="colorSelectedTextBackground">#E6EE9C</color>
+    <color name="colorSelectedTextBackground">#77E6EE9C</color>
 </resources>

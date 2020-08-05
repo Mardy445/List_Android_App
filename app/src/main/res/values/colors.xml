@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#C5E1A5</color>
+    <color name="colorPrimaryDark">#A5D6A7</color>
+    <color name="colorAccent">#9FA8DA</color>
+    <color name="colorPrimaryLight">#BAADD8</color>
+    <color name="colorPrimaryShadow">#93C094</color>
+    <color name="colorText">#000000</color>
+    <color name="fadeColour">#00000000</color>
+
+    <color name="colorSelectedText">#324944</color>
+    <color name="colorSelectedTextBackground">#E6EE9C</color>
+</resources>

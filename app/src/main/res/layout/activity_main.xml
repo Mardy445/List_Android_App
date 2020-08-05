@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/sliding_layout"
+    tools:context=".MainActivity"
+    app:umanoDragView="@id/dragup"
+    app:umanoPanelHeight="30dp"
+    app:umanoShadowHeight="0dp"
+    app:umanoOverlay="true"
+    app:umanoFadeColor="@color/fadeColour"
+    android:gravity="bottom">
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/main_list_view"
+        android:paddingBottom="20dp">
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:id="@+id/dragup"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:focusable="false"
+        android:gravity="center_horizontal"
+        android:background="@drawable/bottom_drag_menu">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/more_vertical_icon"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:text="Hello World!"/>
+
+
+
+
+    </LinearLayout>
+
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>

@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
@@ -46,34 +47,71 @@ public class CustomListAdapter extends BaseAdapter implements ListAdapter {
         final CustomListDataItem data = (CustomListDataItem) getItem(position);
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        convertView = inflater.inflate(R.layout.custom_list_item,parent,false);
+        TextView view;
 
-        TextView view = convertView.findViewById(R.id.data_dump_note_item);
-        view.setEnabled(!data.isComplete());
-
-        final Button button = convertView.findViewById(R.id.data_dump_remove_button);
-        view.setText(data.getData());
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                data.setComplete(true);
-                data.setSelected(false);
-                button.setVisibility(View.INVISIBLE);
-                notifyDataSetChanged();
-            }
-        });
+        if(!data.isComplete()){
+            convertView = inflater.inflate(R.layout.custom_list_item,parent,false);
+            view = convertView.findViewById(R.id.data_dump_note_item);
+            uncompleteNoteFunctionality(convertView,view,data);
+        }
+        else{
+            convertView = inflater.inflate(R.layout.custom_list_item_hidden,parent,false);
+            view = convertView.findViewById(R.id.data_dump_complete_note_item);
+            completedNoteFunctionality(convertView,view,data);
+            view.setBackgroundColor(convertView.getResources().getColor(R.color.colorCompleteTextBackground));
+            view.setTextColor(convertView.getResources().getColor(R.color.colorCompleteText));
+            view.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        }
 
         if(data.isSelected()){
             view.setBackgroundColor(convertView.getResources().getColor(R.color.colorSelectedTextBackground));
             view.setTextColor(convertView.getResources().getColor(R.color.colorSelectedText));
         }
-        else if(data.isComplete()){
-            view.setBackgroundColor(convertView.getResources().getColor(R.color.colorCompleteTextBackground));
-            view.setTextColor(convertView.getResources().getColor(R.color.colorCompleteText));
-            view.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        }
         return convertView;
+    }
+
+    private void uncompleteNoteFunctionality(View convertView, TextView view, final CustomListDataItem data){
+        final Button removeButton = convertView.findViewById(R.id.remove_button);
+        final Button editButton = convertView.findViewById(R.id.edit_button);
+        view.setText(data.getData());
+
+        removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                data.setComplete(true);
+                data.setSelected(false);
+                notifyDataSetChanged();
+            }
+        });
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean status = !data.isSelected();
+                unselectAll();
+                data.setSelected(status);
+                notifyDataSetChanged();
+            }
+
+            private void unselectAll(){
+                for(CustomListDataItem dataItem : listData){
+                    dataItem.setSelected(false);
+                }
+            }
+        });
+    }
+
+    private void completedNoteFunctionality(View convertView, TextView view, final CustomListDataItem data){
+        final Button button = convertView.findViewById(R.id.undo_button);
+        view.setText(data.getData());
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                data.setComplete(false);
+                notifyDataSetChanged();
+            }
+        });
     }
 
 

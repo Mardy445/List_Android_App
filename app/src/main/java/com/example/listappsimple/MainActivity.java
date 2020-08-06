@@ -33,20 +33,11 @@ public class MainActivity extends AppCompatActivity {
         data.add(new CustomListDataItem("8"));
         data.add(new CustomListDataItem("9"));
         data.add(new CustomListDataItem("10"));
-        data.add(new CustomListDataItem("11"));
-        data.add(new CustomListDataItem("12"));
-        data.add(new CustomListDataItem("13"));
-        data.add(new CustomListDataItem("14"));
-        data.add(new CustomListDataItem("15"));
-        data.add(new CustomListDataItem("16"));
-        data.add(new CustomListDataItem("17"));
-        data.add(new CustomListDataItem("18"));
-        data.add(new CustomListDataItem("19"));
-        data.add(new CustomListDataItem("20"));
+
 
         adapter = new CustomListAdapter(data, listView.getContext());
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new DataClickedListener());
+        //listView.setOnItemClickListener(new DataClickedListener());
     }
 
     private class DataClickedListener implements AdapterView.OnItemClickListener {

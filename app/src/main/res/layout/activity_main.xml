@@ -12,7 +12,8 @@
     app:umanoShadowHeight="0dp"
     app:umanoOverlay="true"
     app:umanoFadeColor="@color/fadeColour"
-    android:gravity="bottom">
+    android:gravity="bottom"
+    android:background="@color/colorMainBackground">
 
     <ListView
         android:layout_width="wrap_content"
@@ -24,7 +25,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.5"
+        android:layout_weight="0.3"
         android:id="@+id/dragup"
         android:clickable="true"
         android:orientation="vertical"
@@ -38,11 +39,23 @@
             android:src="@drawable/more_vertical_icon"
             />
 
-        <TextView
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
-            android:text="Hello World!"/>
+            android:inputType="textMultiLine"
+            android:imeOptions="actionUnspecified"
+            android:ems="10"
+            android:paddingStart="10dp"
+            android:paddingLeft="10dp"
+            android:paddingEnd="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/edit_text_shape"/>
 
 
 

@@ -26,6 +26,23 @@ public class MainActivity extends AppCompatActivity {
         data.add(new CustomListDataItem("1"));
         data.add(new CustomListDataItem("2"));
         data.add(new CustomListDataItem("3"));
+        data.add(new CustomListDataItem("4"));
+        data.add(new CustomListDataItem("5"));
+        data.add(new CustomListDataItem("6"));
+        data.add(new CustomListDataItem("7"));
+        data.add(new CustomListDataItem("8"));
+        data.add(new CustomListDataItem("9"));
+        data.add(new CustomListDataItem("10"));
+        data.add(new CustomListDataItem("11"));
+        data.add(new CustomListDataItem("12"));
+        data.add(new CustomListDataItem("13"));
+        data.add(new CustomListDataItem("14"));
+        data.add(new CustomListDataItem("15"));
+        data.add(new CustomListDataItem("16"));
+        data.add(new CustomListDataItem("17"));
+        data.add(new CustomListDataItem("18"));
+        data.add(new CustomListDataItem("19"));
+        data.add(new CustomListDataItem("20"));
 
         adapter = new CustomListAdapter(data, listView.getContext());
         listView.setAdapter(adapter);

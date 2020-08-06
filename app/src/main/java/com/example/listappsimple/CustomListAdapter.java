@@ -57,8 +57,6 @@ public class CustomListAdapter extends BaseAdapter implements ListAdapter {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listData.remove(data);
-                listData.add(data);
                 data.setComplete(true);
                 data.setSelected(false);
                 button.setVisibility(View.INVISIBLE);

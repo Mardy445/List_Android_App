@@ -19,7 +19,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/main_list_view"
-        android:paddingBottom="20dp">
+        android:overScrollMode="always"
+        android:paddingBottom="150dp"
+        android:clipToPadding="false">
     </ListView>
 
     <LinearLayout

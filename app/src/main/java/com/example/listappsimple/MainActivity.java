@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void addTestData(){
         ListView listView = findViewById(R.id.main_list_view);
-        listView.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
 
         data.add(new CustomListDataItem("1"));
         data.add(new CustomListDataItem("2"));

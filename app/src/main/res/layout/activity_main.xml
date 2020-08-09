@@ -40,11 +40,13 @@
             />
 
         <EditText
+            android:id="@+id/note_input_edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
-            android:imeOptions="actionUnspecified"
+            android:imeOptions="actionNext"
             android:ems="10"
+            android:hint="Input Notes"
             android:paddingStart="10dp"
             android:paddingLeft="10dp"
             android:paddingEnd="10dp"

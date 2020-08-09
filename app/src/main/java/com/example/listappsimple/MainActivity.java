@@ -2,11 +2,16 @@ package com.example.listappsimple;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -20,6 +25,40 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        addTestData();
+
+        final EditText input = findViewById(R.id.note_input_edit_text);
+        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent e) {
+                addItemToList(input.getText().toString());
+                input.getText().clear();
+                //InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                //imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                return true;
+            }
+        });
+        //listView.setOnItemClickListener(new DataClickedListener());
+    }
+
+    private void addItemToList(String input){
+        if(isInputDupe(input) || input.equals("")){
+            return;
+        }
+        data.add(new CustomListDataItem(input));
+        adapter.notifyDataSetChanged();
+    }
+
+    private boolean isInputDupe(String input){
+        for(CustomListDataItem item : data){
+            if(item.getData().equals(input)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void addTestData(){
         ListView listView = findViewById(R.id.main_list_view);
         listView.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
 
@@ -37,26 +76,25 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new CustomListAdapter(data, listView.getContext());
         listView.setAdapter(adapter);
-        //listView.setOnItemClickListener(new DataClickedListener());
     }
 
-    private class DataClickedListener implements AdapterView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            CustomListDataItem dataItem = (CustomListDataItem) parent.getItemAtPosition(position);
-            if(dataItem.isComplete()){
-                return;
-            }
-            boolean status = !dataItem.isSelected();
-            unselectAll();
-            dataItem.setSelected(status);
-            adapter.notifyDataSetChanged();
-        }
-        
-        private void unselectAll(){
-            for(CustomListDataItem dataItem : data){
-                dataItem.setSelected(false);
-            }
-        }
-    }
+//    private class DataClickedListener implements AdapterView.OnItemClickListener {
+//        @Override
+//        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//            CustomListDataItem dataItem = (CustomListDataItem) parent.getItemAtPosition(position);
+//            if(dataItem.isComplete()){
+//                return;
+//            }
+//            boolean status = !dataItem.isSelected();
+//            unselectAll();
+//            dataItem.setSelected(status);
+//            adapter.notifyDataSetChanged();
+//        }
+//
+//        private void unselectAll(){
+//            for(CustomListDataItem dataItem : data){
+//                dataItem.setSelected(false);
+//            }
+//        }
+//    }
 }

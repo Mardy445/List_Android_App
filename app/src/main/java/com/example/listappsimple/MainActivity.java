@@ -6,15 +6,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -32,28 +29,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        addTestData();
+        ListView listView = findViewById(R.id.main_list_view);
+        adapter = new CustomListAdapter(data, listView.getContext());
+        listView.setAdapter(adapter);
         final EditText input = findViewById(R.id.note_input_edit_text);
-//        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent e) {
-//                String text = input.getText().toString();
-//                if(isInputDupe(text) || text.equals("")){
-//                    return true;
-//                }
-//
-//                if(currentItemToEdit == null){
-//                    data.add(new CustomListDataItem(text));
-//                }
-//                else{
-//                    currentItemToEdit.setData(text);
-//                    currentItemToEdit.setSelected(false);
-//                }
-//                adapter.notifyDataSetChanged();
-//                input.getText().clear();
-//                return true;
-//            }
-//        });
 
         input.addTextChangedListener(new TextWatcher() {
             @Override
@@ -85,32 +64,26 @@ public class MainActivity extends AppCompatActivity {
                 if(newState == SlidingUpPanelLayout.PanelState.COLLAPSED){
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    deselectAllItems();
+                    adapter.notifyDataSetChanged();
                 }
             }
         });
-//        sliding.getChildAt(1).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(sliding.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED){
-//                   data.add(new CustomListDataItem(""));
-//                   adapter.notifyDataSetChanged();
-//                }
-//            }
-//        });
 
-
-
-        ListView listView = findViewById(R.id.main_list_view);
-        listView.setOnItemClickListener(new DataClickedListener());
-    }
-
-    private boolean isInputDupe(String input){
-        for(CustomListDataItem item : data){
-            if(item.getData().equals(input)){
-                return true;
+        sliding.getChildAt(1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(sliding.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED){
+                   data.add(new CustomListDataItem("-"));
+                   adapter.notifyDataSetChanged();
+                }
+                else{
+                    sliding.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                }
             }
-        }
-        return false;
+        });
+
+        listView.setOnItemClickListener(new DataClickedListener());
     }
 
     protected void setEditItem(boolean isAnythingSelected, CustomListDataItem item){
@@ -128,24 +101,12 @@ public class MainActivity extends AppCompatActivity {
         input.setText(isAnythingSelected ? item.getData() : "");
     }
 
-    private void addTestData(){
-        ListView listView = findViewById(R.id.main_list_view);
-
-        data.add(new CustomListDataItem("1"));
-        data.add(new CustomListDataItem("2"));
-        data.add(new CustomListDataItem("3"));
-        data.add(new CustomListDataItem("4"));
-        data.add(new CustomListDataItem("5"));
-        data.add(new CustomListDataItem("6"));
-        data.add(new CustomListDataItem("7"));
-        data.add(new CustomListDataItem("8"));
-        data.add(new CustomListDataItem("9"));
-        data.add(new CustomListDataItem("10"));
-
-
-        adapter = new CustomListAdapter(data, listView.getContext());
-        listView.setAdapter(adapter);
+    private void deselectAllItems(){
+        for(CustomListDataItem dataItem : data){
+            dataItem.setSelected(false);
+        }
     }
+
 
     private class DataClickedListener implements AdapterView.OnItemClickListener {
         @Override
@@ -155,16 +116,10 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             boolean status = !dataItem.isSelected();
-            unselectAll();
+            deselectAllItems();
             dataItem.setSelected(status);
             adapter.notifyDataSetChanged();
             setEditItem(status,dataItem);
-        }
-
-        private void unselectAll(){
-            for(CustomListDataItem dataItem : data){
-                dataItem.setSelected(false);
-            }
         }
     }
 }

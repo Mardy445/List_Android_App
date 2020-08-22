@@ -38,7 +38,7 @@
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/more_vertical_icon"
+            android:src="@drawable/add_icon"
             />
 
         <EditText

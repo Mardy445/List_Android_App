@@ -72,7 +72,6 @@ public class CustomListAdapter extends BaseAdapter implements ListAdapter {
 
     private void uncompleteNoteFunctionality(View convertView, TextView view, final CustomListDataItem data){
         final Button removeButton = convertView.findViewById(R.id.remove_button);
-        final Button editButton = convertView.findViewById(R.id.edit_button);
         view.setText(data.getData());
 
         removeButton.setOnClickListener(new View.OnClickListener() {
@@ -83,32 +82,25 @@ public class CustomListAdapter extends BaseAdapter implements ListAdapter {
                 notifyDataSetChanged();
             }
         });
-
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean status = !data.isSelected();
-                unselectAll();
-                data.setSelected(status);
-                notifyDataSetChanged();
-            }
-
-            private void unselectAll(){
-                for(CustomListDataItem dataItem : listData){
-                    dataItem.setSelected(false);
-                }
-            }
-        });
     }
 
     private void completedNoteFunctionality(View convertView, TextView view, final CustomListDataItem data){
-        final Button button = convertView.findViewById(R.id.undo_button);
+        final Button undoButton = convertView.findViewById(R.id.undo_button);
+        final Button deleteButton = convertView.findViewById(R.id.delete_button);
         view.setText(data.getData());
 
-        button.setOnClickListener(new View.OnClickListener() {
+        undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 data.setComplete(false);
+                notifyDataSetChanged();
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listData.remove(data);
                 notifyDataSetChanged();
             }
         });

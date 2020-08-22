@@ -33,4 +33,17 @@
         android:background="@drawable/undo_icon"
         android:focusable="false"/>
 
+    <Button
+        android:id="@+id/delete_button"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_toStartOf="@+id/undo_button"
+        android:layout_toLeftOf="@+id/undo_button"
+        android:background="@drawable/delete_icon"
+        android:focusable="false" />
+
 </RelativeLayout>

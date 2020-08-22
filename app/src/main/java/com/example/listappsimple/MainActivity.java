@@ -6,11 +6,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -61,11 +63,16 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                ImageView image = findViewById(R.id.sliding_panel_icon);
                 if(newState == SlidingUpPanelLayout.PanelState.COLLAPSED){
+                    image.setImageResource(R.drawable.add_icon);
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                     deselectAllItems();
                     adapter.notifyDataSetChanged();
+                }
+                else{
+                    image.setImageResource(R.drawable.hide_icon);
                 }
             }
         });
@@ -74,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(sliding.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED){
-                   data.add(new CustomListDataItem("-"));
+                   data.add(new CustomListDataItem(""));
                    adapter.notifyDataSetChanged();
                 }
                 else{
@@ -105,6 +112,19 @@ public class MainActivity extends AppCompatActivity {
         for(CustomListDataItem dataItem : data){
             dataItem.setSelected(false);
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            final SlidingUpPanelLayout sliding = findViewById(R.id.sliding_layout);
+            if(sliding.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED){
+                sliding.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                return true;
+            }
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
 

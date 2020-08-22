@@ -30,5 +30,9 @@ public class CustomListDataItem{
         return data;
     }
 
+    public void setData(String data){
+        this.data = data;
+    }
+
 
 }

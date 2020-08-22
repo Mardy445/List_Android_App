@@ -44,6 +44,7 @@
         android:layout_toStartOf="@+id/remove_button"
         android:layout_toLeftOf="@+id/remove_button"
         android:background="@drawable/edit_icon"
-        android:focusable="false" />
+        android:focusable="false"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

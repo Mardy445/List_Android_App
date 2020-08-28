@@ -1,6 +1,8 @@
 package com.example.listappsimple;
 
-public class CustomListDataItem{
+import java.io.Serializable;
+
+public class CustomListDataItem implements Serializable {
 
     private String data;
     private boolean selected = false;

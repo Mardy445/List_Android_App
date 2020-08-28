@@ -17,18 +17,29 @@ import android.widget.ListView;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     //This list represents the note data on the application
-    ArrayList<CustomListDataItem> data = new ArrayList<>();
+    ArrayList<CustomListDataItem> data;
 
     //This object is the adapter for the ListView
     BaseAdapter adapter;
 
     //This object represents the current item to edit, IE the currently selected item
     CustomListDataItem currentItemToEdit = null;
+
+    //These objects are used for saving data to file
+    FileOutputStream fos;
+    ObjectOutputStream oos;
 
     @Override
     /*
@@ -39,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        loadStateOfApplication();
 
         ListView listView = findViewById(R.id.main_list_view);
         adapter = new CustomListAdapter(data, listView.getContext());
@@ -98,6 +111,42 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        saveStateOfApplication();
+    }
+
+    public void saveStateOfApplication(){
+        deselectAllItems();
+        try{
+            FileOutputStream fos = openFileOutput("saved.ser",MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(data);
+            oos.close();
+            fos.close();
+        }
+        catch (IOException e){}
+    }
+
+    public void loadStateOfApplication(){
+        try{
+            FileInputStream fis = openFileInput("saved.ser");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            data = (ArrayList<CustomListDataItem>) ois.readObject();
+            fis.close();
+            ois.close();
+        }
+        catch (FileNotFoundException e){
+            data = new ArrayList<>();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 

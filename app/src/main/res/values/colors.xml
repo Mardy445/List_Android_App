@@ -13,4 +13,6 @@
 
     <color name="colorCompleteText">#969696</color>
     <color name="colorCompleteTextBackground">#77525252</color>
+
+    <color name="launcher_icon_background">#26A69A</color>
 </resources>

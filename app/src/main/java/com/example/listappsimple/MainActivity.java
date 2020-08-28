@@ -21,12 +21,21 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    //This list represents the note data on the application
     ArrayList<CustomListDataItem> data = new ArrayList<>();
+
+    //This object is the adapter for the ListView
     BaseAdapter adapter;
 
+    //This object represents the current item to edit, IE the currently selected item
     CustomListDataItem currentItemToEdit = null;
 
     @Override
+    /*
+    This method is called upon creation of the main activity.
+    It will set up the ListView and its adapter.
+    It will also set up all the various listeners for the main activity.
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -34,65 +43,22 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.main_list_view);
         adapter = new CustomListAdapter(data, listView.getContext());
         listView.setAdapter(adapter);
+
         final EditText input = findViewById(R.id.note_input_edit_text);
-
-        input.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(currentItemToEdit != null){
-                    currentItemToEdit.setData(s.toString());
-                    adapter.notifyDataSetChanged();
-                }
-            }
-        });
+        input.addTextChangedListener(new ListenerOnEditTextChanged());
 
         final SlidingUpPanelLayout sliding = findViewById(R.id.sliding_layout);
-        sliding.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-            @Override
-            public void onPanelSlide(View panel, float slideOffset) {
+        sliding.addPanelSlideListener(new ListenerSlidingPanel());
 
-            }
+        sliding.getChildAt(1).setOnClickListener(new ListenerOnSlideUpPanelClicked());
 
-            @Override
-            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                ImageView image = findViewById(R.id.sliding_panel_icon);
-                if(newState == SlidingUpPanelLayout.PanelState.COLLAPSED){
-                    image.setImageResource(R.drawable.add_icon);
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                    deselectAllItems();
-                    adapter.notifyDataSetChanged();
-                }
-                else{
-                    image.setImageResource(R.drawable.hide_icon);
-                }
-            }
-        });
-
-        sliding.getChildAt(1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(sliding.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED){
-                   data.add(new CustomListDataItem(""));
-                   adapter.notifyDataSetChanged();
-                }
-                else{
-                    sliding.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                }
-            }
-        });
-
-        listView.setOnItemClickListener(new DataClickedListener());
+        listView.setOnItemClickListener(new ListenerDataClicked());
     }
 
+    /*
+    This method will set the state of the panel, soft keyboard and edit text input
+    depending on whether anything is selected or not.
+     */
     protected void setEditItem(boolean isAnythingSelected, CustomListDataItem item){
 
         final SlidingUpPanelLayout sliding = findViewById(R.id.sliding_layout);
@@ -108,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
         input.setText(isAnythingSelected ? item.getData() : "");
     }
 
+    /*
+    This will deselect all items.
+     */
     private void deselectAllItems(){
         for(CustomListDataItem dataItem : data){
             dataItem.setSelected(false);
@@ -115,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    /*
+    This method is called when any button is pressed on the mobile device.
+    I use this method to change the functionality of the "back" button if the sliding panel is open.
+     */
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             final SlidingUpPanelLayout sliding = findViewById(R.id.sliding_layout);
@@ -128,7 +101,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private class DataClickedListener implements AdapterView.OnItemClickListener {
+    //LISTENERS for various parts of the main activity
+
+
+    /*
+    If a ListView item is clicked, set that item to be "selected" and notify the adapter.
+     */
+    private class ListenerDataClicked implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             CustomListDataItem dataItem = (CustomListDataItem) parent.getItemAtPosition(position);
@@ -140,6 +119,71 @@ public class MainActivity extends AppCompatActivity {
             dataItem.setSelected(status);
             adapter.notifyDataSetChanged();
             setEditItem(status,dataItem);
+        }
+    }
+
+    /*
+    If the edit text box text is changed, change the data of the currently selected item
+     */
+    private class ListenerOnEditTextChanged implements TextWatcher {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if(currentItemToEdit != null){
+                currentItemToEdit.setData(s.toString());
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    /*
+    If the state of the sliding panel is changed,
+    alter the selected item, soft keyboard, and sliding panel icon accordingly.
+     */
+    private class ListenerSlidingPanel implements SlidingUpPanelLayout.PanelSlideListener {
+        @Override
+        public void onPanelSlide(View panel, float slideOffset) {
+
+        }
+
+        @Override
+        public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+            ImageView image = findViewById(R.id.sliding_panel_icon);
+            if(newState == SlidingUpPanelLayout.PanelState.COLLAPSED){
+                image.setImageResource(R.drawable.add_icon);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                deselectAllItems();
+                adapter.notifyDataSetChanged();
+            }
+            else{
+                image.setImageResource(R.drawable.hide_icon);
+            }
+        }
+    }
+
+    /*
+    If the panel is clicked and the panel is collapsed, instead of opening the panel, make a new data item.
+    Otherwise, close the panel.
+     */
+    private class ListenerOnSlideUpPanelClicked implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            final SlidingUpPanelLayout sliding = findViewById(R.id.sliding_layout);
+            if(sliding.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED){
+                data.add(new CustomListDataItem(""));
+                adapter.notifyDataSetChanged();
+            }
+            else{
+                sliding.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            }
         }
     }
 }
